@@ -2,6 +2,8 @@
 
 Attach a label to pull requests based on the number of approvals.
 
+![shamshir](https://user-images.githubusercontent.com/90729/151774087-1d7fd050-d5fd-4b8b-9b27-eea83a5dedc9.png)
+
 ## Motivation
 - Don't waste time attaching `releasable` labels to pull requests
 
