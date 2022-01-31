@@ -1,5 +1,5 @@
 const { Octokit } = require("@octokit/core")
-const octokit = new Octokit({auth: process.env.rotulus_pat })
+const octokit = new Octokit({auth: process.env.shamshir_pat })
 
 const { logger } = require('./winston.js')
 const { argv } = require('./yargs.js')
@@ -13,12 +13,12 @@ if (check == true) {
 main(owner, repo)
 
 async function main(owner, repo) {
-    logger.log({ level: 'info', message: 'Rotulus started.', owner: owner, repo: repo, mode: mode });
+    logger.log({ level: 'info', message: 'Shamshir started.', owner: owner, repo: repo, mode: mode });
 
     try {
         const result = await getPulls(owner, repo)
         const ids = result.map(x => x.number)
-        logger.log({ level: 'info', message: `Rotulus got pulls: ${ids}`, owner: owner, repo: repo, mode: mode });
+        logger.log({ level: 'info', message: `Shamshir got pulls: ${ids}`, owner: owner, repo: repo, mode: mode });
         for (let id of ids) {
             const reviews = await getReviews(owner, repo, id)
             const states = reviews.map(x => x.state)
@@ -31,7 +31,7 @@ async function main(owner, repo) {
                 if (mode === "live") {
                     await addLabelToPull(owner, repo, id, label)
                 }
-                logger.log({ level: 'info', message: `Rotulus added releasable label to pull/${id}.`, owner: owner, repo: repo, mode: mode });
+                logger.log({ level: 'info', message: `Shamshir added releasable label to pull/${id}.`, owner: owner, repo: repo, mode: mode });
             } else {
                 if (! await hasLabel(owner, repo, id, label)) {
                     // The pull has neither the required number of approval nor the label yet.
@@ -41,13 +41,13 @@ async function main(owner, repo) {
                 if (mode === "live") {
                     await removeLabelFromPull(owner, repo, id, label)
                 }
-                logger.log({ level: 'info', message: `Rotulus removed releasable label from pull/${id}.`, owner: owner, repo: repo, mode: mode });
+                logger.log({ level: 'info', message: `Shamshir removed releasable label from pull/${id}.`, owner: owner, repo: repo, mode: mode });
             }
         }
     } catch (error) {
         logger.log({ level: 'error', message: `${error}`, owner: owner, repo: repo, function: 'main', mode: mode });
     } finally {
-        logger.log({ level: 'info', message: 'Rotulus finished.', owner: owner, repo: repo, mode: mode });
+        logger.log({ level: 'info', message: 'Shamshir finished.', owner: owner, repo: repo, mode: mode });
     }
 }
 

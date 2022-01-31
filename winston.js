@@ -10,7 +10,7 @@ const logger = createLogger({
         format.splat(),
         format.json()
     ),
-    defaultMeta: { service: 'rotulus' },
+    defaultMeta: { service: 'shamshir' },
     transports: [
         //
         // - Write all logs with importance level of `error` or less to `error.log`
