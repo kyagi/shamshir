@@ -1,0 +1,28 @@
+name: 'Shamshir'
+description: 'Attach label to pull requests when acquiring the quorum of approval'
+author: 'Kazuo Yagi'
+
+inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub token'
+    required: true
+  owner:
+    description: 'Github repository owner'
+    required: true
+  repo:
+    description: 'Github repository'
+    required: true
+  label:
+    description: 'Github label'
+    required: true
+  quorum:
+    description: 'The quorum of approval'
+    required: true
+
+outputs:
+  log:
+    description: 'Log message for Github Actions page'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
