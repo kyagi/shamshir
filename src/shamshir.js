@@ -1,5 +1,15 @@
 const { Octokit } = require("@octokit/core")
-const octokit = new Octokit({auth: process.env.shamshir_pat })
+let octokit = new Octokit({auth: process.env.shamshir_pat })
+
+const core = require('@actions/core')
+const github = require('@actions/github')
+const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN')
+if (! process.env.shamshir_pat) {
+    octokit = github.getOctokit(GITHUB_TOKEN)
+}
+const { context = {} } = github
+const { pull_request } = context.payload
+
 const { logger } = require("./winston.js")
 
 // https://docs.github.com/en/rest/reference/pulls#list-pull-requests
@@ -93,3 +103,5 @@ exports.hasLabel = hasLabel
 exports.listLabelOfPulls = listLabelOfPulls
 exports.addLabelToPull = addLabelToPull
 exports.removeLabelFromPull = removeLabelFromPull
+exports.core = core
+exports.github = github
