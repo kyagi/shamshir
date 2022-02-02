@@ -1,0 +1,27 @@
+name: Shamshir
+on:
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  pull_request:
+    types: [edited, labeld, unlabeled]
+  schedule:
+    - cron: '0,30 0-10 * * 1-5'
+
+jobs:
+  Labeling:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🌙 Shamshir was automatically triggered by a ${{ github.event_name }} event."
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm cache clean -f
+      - id: aaa
+        uses: kyagi/shamshir@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ github.repository_owner }}
+          repo:  ${{ github.repository }}
+          label: 'releasable'
+          quorum: '1'
+      - run: echo "${{ steps.aaa.outputs.log }}"
+      - run: echo "🌙 Shamshir's status is ${{ job.status }}."

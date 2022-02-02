@@ -1,58 +1,8 @@
 const { Octokit } = require("@octokit/core")
 const octokit = new Octokit({auth: process.env.shamshir_pat })
 
-const { logger } = require('./winston.js')
-const { argv } = require('./yargs.js')
-const { owner, repo, label, quorum, check } = argv
-
-let mode = "live"
-if (check == true) {
-    mode = "dry-run"
-}
-
-main(owner, repo)
-
-async function main(owner, repo) {
-    logger.log({ level: 'info', message: 'Shamshir started.', owner: owner, repo: repo, mode: mode });
-
-    try {
-        const result = await getPulls(owner, repo)
-        const ids = result.map(x => x.number)
-        logger.log({ level: 'info', message: `Shamshir got pulls: ${ids}`, owner: owner, repo: repo, mode: mode });
-        for (let id of ids) {
-            const reviews = await getReviews(owner, repo, id)
-            const states = reviews.map(x => x.state)
-            if (states.filter(x => x === 'APPROVED').length >= quorum) {
-                if (await hasLabel(owner, repo, id, label)) {
-                    // The pull has already both the required number of approval and the label.
-                    // There is nothing left to do.
-                    continue
-                }
-                if (mode === "live") {
-                    await addLabelToPull(owner, repo, id, label)
-                }
-                logger.log({ level: 'info', message: `Shamshir added releasable label to pull/${id}.`, owner: owner, repo: repo, mode: mode });
-            } else {
-                if (! await hasLabel(owner, repo, id, label)) {
-                    // The pull has neither the required number of approval nor the label yet.
-                    // There is nothing left to do.
-                    continue
-                }
-                if (mode === "live") {
-                    await removeLabelFromPull(owner, repo, id, label)
-                }
-                logger.log({ level: 'info', message: `Shamshir removed releasable label from pull/${id}.`, owner: owner, repo: repo, mode: mode });
-            }
-        }
-    } catch (error) {
-        logger.log({ level: 'error', message: `${error}`, owner: owner, repo: repo, function: 'main', mode: mode });
-    } finally {
-        logger.log({ level: 'info', message: 'Shamshir finished.', owner: owner, repo: repo, mode: mode });
-    }
-}
-
 // https://docs.github.com/en/rest/reference/pulls#list-pull-requests
-function getPulls(owner, repo) {
+function getPulls(owner, repo, mode) {
     return octokit.request("GET /repos/{owner}/{repo}/pulls", {
         owner: `${owner}`, repo: `${repo}`, page: 1
     }).then(response => {
@@ -65,7 +15,7 @@ function getPulls(owner, repo) {
 }
 
 // https://docs.github.com/en/rest/reference/pulls#list-reviews-for-a-pull-request
-function getReviews(owner, repo, id) {
+function getReviews(owner, repo, id, mode) {
     return octokit.request("GET /repos/{owner}/{repo}/pulls/{id}/reviews", {
         owner: owner, repo: repo, id: id
     }).then(response => {
@@ -77,7 +27,7 @@ function getReviews(owner, repo, id) {
     })
 }
 
-async function hasLabel(owner, repo, issue_number, label) {
+async function hasLabel(owner, repo, issue_number, label, mode) {
     const result = await listLabelOfPulls(owner, repo, issue_number, label)
     try {
         if (result.filter(x => x.name === label).length) {
@@ -91,7 +41,7 @@ async function hasLabel(owner, repo, issue_number, label) {
 }
 
 // https://docs.github.com/en/rest/reference/issues#list-labels-for-an-issue
-function listLabelOfPulls(owner, repo, issue_number, label) {
+function listLabelOfPulls(owner, repo, issue_number, label, mode) {
     const labels = new Array(label)
     return octokit.request("GET /repos/{owner}/{repo}/issues/{issue_number}/labels?pull_requests={issue_number}", {
         owner: owner, repo: repo, issue_number: issue_number, labels: labels
@@ -110,7 +60,7 @@ function listLabelOfPulls(owner, repo, issue_number, label) {
 // are provided within the Issues API.
 
 // https://docs.github.com/en/rest/reference/issues#add-labels-to-an-issue
-function addLabelToPull(owner, repo, issue_number, label) {
+function addLabelToPull(owner, repo, issue_number, label, mode) {
     const labels = new Array(label)
     return octokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/labels?pull_requests={issue_number}", {
        owner: owner, repo: repo, issue_number: issue_number, labels: labels
@@ -124,7 +74,7 @@ function addLabelToPull(owner, repo, issue_number, label) {
 }
 
 // https://docs.github.com/en/rest/reference/issues#remove-a-label-from-an-issue
-function removeLabelFromPull(owner, repo, issue_number, label) {
+function removeLabelFromPull(owner, repo, issue_number, label, mode) {
     return octokit.request("DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}", {
         owner: owner, repo: repo, issue_number: issue_number, name: label, pull_requests: issue_number
     }).then(response => {
@@ -135,3 +85,10 @@ function removeLabelFromPull(owner, repo, issue_number, label) {
         return Promise.reject(new Error(`(function: removeLabelFromPull, error: ${response.status})`))
     })
 }
+
+exports.getPulls = getPulls
+exports.getReviews = getReviews
+exports.hasLabel = hasLabel
+exports.listLabelOfPulls = listLabelOfPulls
+exports.addLabelToPull = addLabelToPull
+exports.removeLabelFromPull = removeLabelFromPull
