@@ -4,13 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "ncc build src/shamshir-github-actions.js -o dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kazuo Yagi",
-  "keywords": ["github", "actions", "label", "pull", "pull request", "approve"],
+  "keywords": [
+    "github",
+    "actions",
+    "label",
+    "pull",
+    "pull request",
+    "approve"
+  ],
   "license": "ISC",
   "dependencies": {
     "@octokit/core": "^3.5.1",
+    "@vercel/ncc": "^0.33.1",
     "winston": "^3.5.0",
     "yargs": "^17.3.1"
   }
