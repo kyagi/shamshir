@@ -1,5 +1,6 @@
 const { Octokit } = require("@octokit/core")
 const octokit = new Octokit({auth: process.env.shamshir_pat })
+const { logger } = require("./winston.js")
 
 // https://docs.github.com/en/rest/reference/pulls#list-pull-requests
 function getPulls(owner, repo, mode) {
