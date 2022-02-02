@@ -28,7 +28,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.issue = exports.issueCommand = void 0;
 const os = __importStar(__nccwpck_require__(2037));
-const utils_1 = __nccwpck_require__(5278);
+const utils_1 = __nccwpck_require__(6321);
 /**
  * Commands
  *
@@ -137,7 +137,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
 const command_1 = __nccwpck_require__(7351);
 const file_command_1 = __nccwpck_require__(717);
-const utils_1 = __nccwpck_require__(5278);
+const utils_1 = __nccwpck_require__(6321);
 const os = __importStar(__nccwpck_require__(2037));
 const path = __importStar(__nccwpck_require__(1017));
 const oidc_utils_1 = __nccwpck_require__(8041);
@@ -450,7 +450,7 @@ exports.issueCommand = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(7147));
 const os = __importStar(__nccwpck_require__(2037));
-const utils_1 = __nccwpck_require__(5278);
+const utils_1 = __nccwpck_require__(6321);
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
@@ -552,7 +552,7 @@ exports.OidcClient = OidcClient;
 
 /***/ }),
 
-/***/ 5278:
+/***/ 6321:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -14596,7 +14596,7 @@ Writable.WritableState = WritableState;
 /*<replacement>*/
 
 var internalUtil = {
-  deprecate: __nccwpck_require__(7127)
+  deprecate: __nccwpck_require__(5278)
 };
 /*</replacement>*/
 
@@ -18085,7 +18085,7 @@ exports.getUserAgent = getUserAgent;
 
 /***/ }),
 
-/***/ 7127:
+/***/ 5278:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 
@@ -23672,6 +23672,7 @@ function wrappy (fn, cb) {
 
 const { Octokit } = __nccwpck_require__(6762)
 const octokit = new Octokit({auth: process.env.shamshir_pat })
+const { logger } = __nccwpck_require__(5946)
 
 // https://docs.github.com/en/rest/reference/pulls#list-pull-requests
 function getPulls(owner, repo, mode) {
