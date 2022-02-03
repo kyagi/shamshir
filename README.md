@@ -69,7 +69,7 @@ $ node shamshir.js --owner kyagi --repo awesome-project --label releasable --quo
 ```
 ### On Github Actions
 #### Setup
-Place shamshir.yml in your .github/workflows directory. You can choose events to trigger.
+Place shamshir.yml in your .github/workflows directory. You can choose events to trigger, label and quorum.
 
 shamshir.yml
 ```
