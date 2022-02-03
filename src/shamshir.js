@@ -24,7 +24,7 @@ module.exports = class Shamshir {
             this._repo = core.getInput('repo').split('/')[1]
             this._label = core.getInput('label')
             this._quorum = core.getInput('quorum')
-            this._mode = false
+            this._mode = "live"
         } else {
             // TODO: error-handing, TBD
             // Neither stand-alone nor github actions
