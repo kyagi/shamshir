@@ -1,5 +1,5 @@
 name: 'Shamshir'
-description: 'Attach label to pull requests when acquiring the quorum of approval'
+description: 'Attach a label to pull requests based on the number of approvals'
 author: 'Kazuo Yagi'
 
 inputs:
@@ -21,7 +21,7 @@ inputs:
 
 outputs:
   log:
-    description: 'Log message for Github Actions page'
+    description: 'shamshir-run log message for github actions'
 
 runs:
   using: 'node16'

@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm install
       - run: npm cache clean -f
-      - id: aaa
+      - id: shamshir-run
         uses: kyagi/shamshir@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,5 +23,5 @@ jobs:
           repo:  ${{ github.repository }}
           label: 'releasable'
           quorum: '1'
-      - run: echo "${{ steps.aaa.outputs.log }}"
+      - run: echo "${{ steps.shamshir-run.outputs.log }}"
       - run: echo "🌙 Shamshir's status is ${{ job.status }}."
