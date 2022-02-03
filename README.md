@@ -23,11 +23,11 @@ $ npm install
 #### Run
 ```
 $ export shamshir_pat="<your_personal_access_token>"
-$ node shamshir.js --owner <project_name> --repo <project_repository> --label <label_name> --quoram <the_number_of_approvals>
+$ node shamshir-stand-alone.js --owner <project_name> --repo <project_repository> --label <label_name> --quoram <the_number_of_approvals>
 ```
 Eg:
 ```
-$ node shamshir.js --owner kyagi --repo awesome-project --label releasable --quorum 2
+$ node shamshir-stand-alone.js --owner kyagi --repo awesome-project --label releasable --quorum 2
 ```
 
 #### Log
@@ -50,11 +50,11 @@ $ cat combined.log
 
 #### Dry-Run (with --check option)
 ```
-$ node shamshir.js --owner <project_name> --repo <project_repository> --label <label_name> --quoram <the_number_of_approvals> --check
+$ node shamshir-stand-alone.js --owner <project_name> --repo <project_repository> --label <label_name> --quoram <the_number_of_approvals> --check
 ```
 Eg:
 ```
-$ node shamshir.js --owner kyagi --repo awesome-project --label releasable --quorum 2 --check
+$ node shamshir-stand-alone.js --owner kyagi --repo awesome-project --label releasable --quorum 2 --check
 ```
 
 #### Options
