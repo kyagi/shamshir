@@ -23670,19 +23670,6 @@ function wrappy (fn, cb) {
 /***/ 6092:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-// const {Octokit} = require("@octokit/core")
-// let octokit = new Octokit({auth: process.env.shamshir_pat})
-//
-// const core = require('@actions/core')
-// const github = require('@actions/github')
-// const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN')
-// if (!process.env.shamshir_pat) {
-//     octokit = github.getOctokit(GITHUB_TOKEN)
-// }
-// const {context = {}} = github
-// const {pull_request} = context.payload
-//
-
 const { Octokit } = __nccwpck_require__(6762)
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
@@ -23711,6 +23698,7 @@ module.exports = class Shamshir {
             this._quorum = core.getInput('quorum')
             this._mode = false
         } else {
+            // TODO: error-handing, TBD
             // Neither stand-alone nor github actions
         }
     }
@@ -23753,11 +23741,15 @@ module.exports = class Shamshir {
                 level: 'error', message: `${error}`, owner: owner, repo: repo, function: 'main', mode: mode })
         } finally {
             // TODO: fix this
-            const fs = __nccwpck_require__(7147)
-            fs.readFile('combined.log', 'utf-8', (err, files) => {
-                if (err) { throw err; }
-                core.setOutput('log', files)
-            })
+            if (GITHUB_TOKEN) {
+                const fs = __nccwpck_require__(7147)
+                fs.readFile('combined.log', 'utf-8', (err, files) => {
+                    if (err) {
+                        throw err;
+                    }
+                    core.setOutput('log', files)
+                })
+            }
             logger.log({level: 'info', message: 'Shamshir finished.', owner: owner, repo: repo, mode: mode })
         }
     }
