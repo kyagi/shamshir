@@ -69,52 +69,19 @@ $ node shamshir.js --owner kyagi --repo awesome-project --label releasable --quo
 ```
 ### On Github Actions
 #### Setup
-1. Place action.yml in your project top directory.
-
-action.yml
-```
-name: 'Shamshir'
-description: 'Attach a label to pull requests based on the number of approvals'
-author: 'Your name'
-
-inputs:
-  GITHUB_TOKEN:
-    description: 'GitHub token'
-    required: true
-  owner:
-    description: 'Github repository owner'
-    required: true
-  repo:
-    description: 'Github repository'
-    required: true
-  label:
-    description: 'Github label'
-    required: true
-  quorum:
-    description: 'The quorum of approval'
-    required: true
-
-outputs:
-  log:
-    description: 'shamshir-run log message for github actions'
-
-runs:
-  using: 'node16'
-  main: 'dist/index.js'
-```
-
-2. Place shamshir.yml in your .github/workflows directory.
+Place shamshir.yml in your .github/workflows directory. You can choose events to trigger.
 
 shamshir.yml
 ```
 name: Shamshir
+# *** You can choose events to trigger. ***
 on:
   pull_request_review:
     types: [submitted, edited, dismissed]
   pull_request:
     types: [edited, labeld, unlabeled]
-#  schedule:
-#    - cron: '0,30 0-10 * * 1-5'
+  schedule:
+    - cron: '0,30 0-10 * * 1-5'
 
 jobs:
   Labeling:
@@ -129,8 +96,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ github.repository_owner }}
           repo:  ${{ github.repository }}
+# *** You can choose a label. ***
           label: 'releasable'
-          quorum: '1'
+# *** You can choose a quorum. ***
+          quorum: '2'
       - run: echo "${{ steps.shamshir-run.outputs.log }}"
       - run: echo "🌙 Shamshir's status is ${{ job.status }}."
 ```
