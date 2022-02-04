@@ -1,4 +1,4 @@
-name: 'Shamshir'
+name: 'ShamshirLabeling'
 description: 'Attach a label to pull requests based on the number of approvals'
 author: 'Kazuo Yagi'
 
@@ -26,3 +26,7 @@ outputs:
 runs:
   using: 'node16'
   main: 'dist/index.js'
+
+branding:
+  icon: 'tag'
+  color: 'green'
