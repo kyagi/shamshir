@@ -73,7 +73,7 @@ Place shamshir.yml in your .github/workflows directory. You can choose events to
 
 shamshir.yml
 ```
-name: Shamshir
+name: ShamshirLabeling
 # *** You can choose events to trigger. ***
 on:
   pull_request_review:
