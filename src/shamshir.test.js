@@ -8,6 +8,13 @@ const mode  = 'dry-run'
 
 const shamshir = new Shamshir(owner, repo, label, quorum, mode)
 
+beforeAll(() => {
+  if (! process.env.shamshir_pat) {
+    console.log('Before running test, you should set environment variable $shamshir_pat.')
+    throw new Error('Authentication Error')
+  }
+})
+
 test('credential should be passed via environment variable', () => {
   expect(process.env.shamshir_pat).toBeDefined()
 })
